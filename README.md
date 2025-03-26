@@ -121,6 +121,12 @@ To create a new release of the provider:
 # Create release binaries, checksums and signatures for all platforms
 make release
 
+# Manually sign the SHA256SUMS file if automatic signing fails
+cd releases
+export GPG_TTY=$(tty)
+gpg --detach-sign terraform-provider-terminal-coffee_v${VERSION}_SHA256SUMS
+cd ..
+
 # Create and push a signed git tag
 make release-tag
 
@@ -129,3 +135,5 @@ make github-release
 ```
 
 This will build binaries for all supported platforms, create SHA256 checksums, sign the checksums with your GPG key, and publish everything to GitHub releases.
+
+> **Note:** Release files (binaries, checksums, etc.) are NOT committed to the repository. They are only uploaded as assets to the GitHub release.

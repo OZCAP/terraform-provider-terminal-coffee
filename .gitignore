@@ -10,6 +10,7 @@
 # Build output
 bin/
 dist/
+releases/
 
 # Dependency directories
 vendor/
