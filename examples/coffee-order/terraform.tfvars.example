@@ -1,0 +1,5 @@
+# Rename this file to terraform.tfvars and add your values
+api_token         = "your_api_token_here"
+address_id        = "shp_XXXXXXXXXXXXXXXXXXXXXXXXX"
+card_id           = "crd_XXXXXXXXXXXXXXXXXXXXXXXXX"
+existing_order_id = "ord_XXXXXXXXXXXXXXXXXXXXXXXXX"  # Optional, comment out if not needed

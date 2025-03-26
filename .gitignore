@@ -1,0 +1,36 @@
+# Binaries and build artifacts
+terraform-provider-terminal-coffee
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Build output
+bin/
+dist/
+
+# Dependency directories
+vendor/
+
+# Terraform files
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Go workspace file
+go.work
+
+# OS specific files
+.DS_Store
+Thumbs.db
