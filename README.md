@@ -1,6 +1,9 @@
 # Terminal Coffee Terraform Provider
 
-This Terraform provider allows you to order coffee and manage orders through the Terminal Shop API.
+Order coffee and retrieve orders from [terminal.shop](https://www.terminal.shop/) with Terraform.
+
+Not affiliated with Terminal products or services... I just want to order coffee in my CI pipeline.
+
 
 - [x] Make new orders
 - [x] Get order details
@@ -15,10 +18,10 @@ This Terraform provider allows you to order coffee and manage orders through the
 
 1. Clone the repository
 2. Enter the repository directory
-3. Build the provider using the Go `build` command:
+3. Build the provider using the Make command:
 
 ```sh
-go build -o terraform-provider-terminal-coffee ./main
+make build
 ```
 
 ## Installing the provider
@@ -29,7 +32,7 @@ After building the provider, you can install it in your local Terraform plugin d
 make install
 ```
 
-This will install the provider for the darwin_amd64 architecture. Edit the Makefile to match your system's architecture.
+This will install the provider for your system's architecture. Edit the `OS_ARCH` variable in the Makefile if needed.
 
 ## Using the provider
 
@@ -38,7 +41,7 @@ terraform {
   required_providers {
     terminal-coffee = {
       source = "OZCAP/terminal-coffee"
-      version = "0.1.0"
+      version = "1.0.2"
     }
   }
 }
@@ -106,3 +109,23 @@ To run the tests:
 ```sh
 make test
 ```
+
+## Releasing the Provider
+
+To create a new release of the provider:
+
+1. Update the `VERSION` variable in the Makefile
+2. Run the following commands:
+
+```sh
+# Create release binaries, checksums and signatures for all platforms
+make release
+
+# Create and push a signed git tag
+make release-tag
+
+# Create a GitHub release with all assets
+make github-release
+```
+
+This will build binaries for all supported platforms, create SHA256 checksums, sign the checksums with your GPG key, and publish everything to GitHub releases.
