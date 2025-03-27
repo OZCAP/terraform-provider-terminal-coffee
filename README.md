@@ -57,8 +57,8 @@ resource "terminal_coffee_order" "coffee" {
   # Format: "variant_id" = "quantity"
   # Each variant represents a specific coffee product in Terminal Shop
   variants = {
-    "var_1234567890" = "1"  # One cup of coffee A
-    "var_2345678901" = "2"  # Two cups of coffee B
+    "var_1234567890" = "1"  # One of product A
+    "var_2345678901" = "2"  # Two of product B
   }
 }
 
