@@ -11,7 +11,7 @@ on:
         description: 'Release notes'
         required: true
         type: string
-        default: 'Release v${{ github.event.inputs.version }}'
+        default: 'Release version'
 
 jobs:
   release:
@@ -36,13 +36,16 @@ jobs:
           git_commit_gpgsign: true
           git_tag_gpgsign: true
 
+      - name: Set version env var
+        run: echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+
       - name: Update version in Makefile
         run: |
-          sed -i "s/VERSION=.*/VERSION=${{ github.event.inputs.version }}/" Makefile
+          sed -i "s/VERSION=.*/VERSION=${{ env.VERSION }}/" Makefile
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add Makefile
-          git commit -m "Bump version to ${{ github.event.inputs.version }}"
+          git commit -m "Bump version to ${{ env.VERSION }}"
           git push origin HEAD
 
       - name: Create release artifacts
@@ -50,19 +53,19 @@ jobs:
 
       - name: Create and sign git tag
         run: |
-          git tag -s "v${{ github.event.inputs.version }}" -u ${{ steps.import_gpg.outputs.keyid }} -m "Release v${{ github.event.inputs.version }}"
-          git push origin "v${{ github.event.inputs.version }}"
+          git tag -s "v${{ env.VERSION }}" -u ${{ steps.import_gpg.outputs.keyid }} -m "Release v${{ env.VERSION }}"
+          git push origin "v${{ env.VERSION }}"
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ github.event.inputs.version }}
-          name: v${{ github.event.inputs.version }}
+          tag_name: v${{ env.VERSION }}
+          name: v${{ env.VERSION }}
           body: ${{ github.event.inputs.release_notes }}
           files: |
             releases/*.zip
-            releases/terraform-provider-terminal-coffee_v${{ github.event.inputs.version }}_SHA256SUMS
-            releases/terraform-provider-terminal-coffee_v${{ github.event.inputs.version }}_SHA256SUMS.sig
+            releases/terraform-provider-terminal-coffee_v${{ env.VERSION }}_SHA256SUMS
+            releases/terraform-provider-terminal-coffee_v${{ env.VERSION }}_SHA256SUMS.sig
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
