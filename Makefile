@@ -3,7 +3,7 @@ default: build
 HOSTNAME=registry.terraform.io
 NAMESPACE=OZCAP
 NAME=terminal-coffee
-VERSION=1.0.5
+VERSION=1.0.6
 OS_ARCH=darwin_amd64
 BINARY=terraform-provider-${NAME}
 SIGNING_KEY=$(shell git config --get user.signingkey)
