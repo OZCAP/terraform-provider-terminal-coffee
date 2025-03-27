@@ -1,0 +1,72 @@
+name: Release Provider
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (without v prefix, e.g. 1.0.6)'
+        required: true
+        type: string
+      release_notes:
+        description: 'Release notes'
+        required: true
+        type: string
+        default: 'Release v${{ github.event.inputs.version }}'
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+
+      - name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_tag_gpgsign: true
+
+      - name: Update version in Makefile
+        run: |
+          sed -i "s/VERSION=.*/VERSION=${{ github.event.inputs.version }}/" Makefile
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add Makefile
+          git commit -m "Bump version to ${{ github.event.inputs.version }}"
+          git push origin HEAD
+
+      - name: Create release artifacts
+        run: make release
+
+      - name: Create and sign git tag
+        run: |
+          git tag -s "v${{ github.event.inputs.version }}" -u ${{ steps.import_gpg.outputs.keyid }} -m "Release v${{ github.event.inputs.version }}"
+          git push origin "v${{ github.event.inputs.version }}"
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.event.inputs.version }}
+          name: v${{ github.event.inputs.version }}
+          body: ${{ github.event.inputs.release_notes }}
+          files: |
+            releases/*.zip
+            releases/terraform-provider-terminal-coffee_v${{ github.event.inputs.version }}_SHA256SUMS
+            releases/terraform-provider-terminal-coffee_v${{ github.event.inputs.version }}_SHA256SUMS.sig
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean up
+        run: |
+          git checkout main
+          rm -rf releases
