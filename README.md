@@ -41,7 +41,6 @@ terraform {
   required_providers {
     terminal-coffee = {
       source = "OZCAP/terminal-coffee"
-      version = "1.0.2"
     }
   }
 }
@@ -54,8 +53,12 @@ resource "terminal_coffee_order" "coffee" {
   address_id = "shp_XXXXXXXXXXXXXXXXXXXXXXXXX"
   card_id    = "crd_XXXXXXXXXXXXXXXXXXXXXXXXX"
   
+  # The variants map links product variant IDs to quantities
+  # Format: "variant_id" = "quantity"
+  # Each variant represents a specific coffee product in Terminal Shop
   variants = {
-    "var_1234567890" = "1"  # One cup of coffee
+    "var_1234567890" = "1"  # One cup of coffee A
+    "var_2345678901" = "2"  # Two cups of coffee B
   }
 }
 
