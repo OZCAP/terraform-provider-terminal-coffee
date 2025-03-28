@@ -1,8 +1,13 @@
 module github.com/OZCAP/terraform-provider-terminal-coffee
 
-go 1.20
+go 1.21
 
-require github.com/hashicorp/terraform-plugin-sdk/v2 v2.29.0
+toolchain go1.22.5
+
+require (
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.29.0
+	github.com/terminaldotshop/terminal-sdk-go v1.7.0
+)
 
 require (
 	github.com/agext/levenshtein v1.2.2 // indirect
@@ -32,6 +37,10 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/oklog/run v1.0.0 // indirect
+	github.com/tidwall/gjson v1.14.4 // indirect
+	github.com/tidwall/match v1.1.1 // indirect
+	github.com/tidwall/pretty v1.2.1 // indirect
+	github.com/tidwall/sjson v1.2.5 // indirect
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect

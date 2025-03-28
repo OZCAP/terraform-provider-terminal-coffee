@@ -86,13 +86,13 @@ func dataSourceOrder() *schema.Resource {
 }
 
 func dataSourceOrderRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	client := m.(*Client)
+	client := m.(*SDKClient)
 
 	var diags diag.Diagnostics
 
 	orderID := d.Get("order_id").(string)
 
-	order, err := client.GetOrder(orderID)
+	order, err := client.GetOrder(ctx, orderID)
 	if err != nil {
 		return diag.FromErr(err)
 	}

@@ -17,7 +17,7 @@ resource "terminal_coffee_order" "coffee" {
   card_id    = var.card_id
   
   variants = {
-    "var_1234567890" = "1"  # One cup of coffee
+    "var_1234567890" = "1"  # One of variant var_1234567890
   }
 }
 

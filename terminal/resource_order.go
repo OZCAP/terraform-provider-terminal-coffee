@@ -89,7 +89,7 @@ func resourceOrder() *schema.Resource {
 }
 
 func resourceOrderCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	client := m.(*Client)
+	client := m.(*SDKClient)
 
 	addressID := d.Get("address_id").(string)
 	cardID := d.Get("card_id").(string)
@@ -111,7 +111,7 @@ func resourceOrderCreate(ctx context.Context, d *schema.ResourceData, m interfac
 		Variants:  variants,
 	}
 
-	createdOrder, err := client.CreateOrder(order)
+	createdOrder, err := client.CreateOrder(ctx, order)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -122,13 +122,13 @@ func resourceOrderCreate(ctx context.Context, d *schema.ResourceData, m interfac
 }
 
 func resourceOrderRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	client := m.(*Client)
+	client := m.(*SDKClient)
 
 	var diags diag.Diagnostics
 
 	orderID := d.Id()
 
-	order, err := client.GetOrder(orderID)
+	order, err := client.GetOrder(ctx, orderID)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -172,6 +172,7 @@ func resourceOrderRead(ctx context.Context, d *schema.ResourceData, m interface{
 }
 
 func resourceOrderDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	// client := m.(*SDKClient) - unused since this is a no-op
 	var diags diag.Diagnostics
 
 	// Terminal Shop API doesn't support cancelling orders, so this is a no-op
