@@ -2,8 +2,6 @@ module github.com/OZCAP/terraform-provider-terminal-coffee
 
 go 1.21
 
-toolchain go1.22.5
-
 require (
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.29.0
 	github.com/terminaldotshop/terminal-sdk-go v1.7.0

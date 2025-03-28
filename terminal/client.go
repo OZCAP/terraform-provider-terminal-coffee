@@ -23,10 +23,11 @@ func NewClient(apiEndpoint, apiToken string) (*SDKClient, error) {
 	}
 
 	// If a custom API endpoint is specified, use it
-	// Make sure the endpoint doesn't have a trailing slash to avoid double slashes in URLs
-	apiEndpoint = strings.TrimSuffix(apiEndpoint, "/")
+	// Handle both single and double trailing slashes to ensure consistent URL formatting
+	// First remove all trailing slashes
+	apiEndpoint = strings.TrimRight(apiEndpoint, "/")
 	
-	// WORKAROUND: The SDK adds a double slash to URLs which causes 404 errors
+	// WORKAROUND: The SDK may add a double slash to URLs which causes 404 errors
 	// Instead of using the SDK's environment helpers, we'll use WithBaseURL directly
 	if apiEndpoint != "https://api.terminal.shop" {
 		// Use WithBaseURL for all cases to avoid the double slash issue in the SDK's environment helpers
